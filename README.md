@@ -1,6 +1,6 @@
 # Turning Point Finder
 
-A responsive football match-intelligence demo. Replay fictional match events, inspect the evidence, and see which moment most changed the match's direction.
+An analyst-first football match-review workspace. Validate a ranked turning point against an auditable scoring breakdown and traceable synthetic event evidence; replay the match alongside the report.
 
 ## Run locally
 
@@ -12,6 +12,8 @@ npm run dev
 ~~~
 
 Open http://localhost:4178. The app runs without Azure or a model. Its three fictional matches and deterministic analysis are bundled with the project.
+
+The site includes [Methodology](http://localhost:4178/methodology), [About and limitations](http://localhost:4178/about), and a [Privacy Policy](http://localhost:4178/privacy). The workspace opens with a completed synthetic match report so the evidence is immediately available.
 
 To make a production build and serve it locally:
 
@@ -30,7 +32,8 @@ See [docs/AZURE_SETUP.md](docs/AZURE_SETUP.md) for the current recommended resou
 ## Product and hackathon
 
 - [Product requirements document](docs/PRD.md)
+- [Azure Foundry setup](docs/AZURE_SETUP.md)
 - [Official Microsoft Premier League Hackathon rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md)
 - [Microsoft Reactor hackathon page](https://developer.microsoft.com/en-us/reactor/series/S-1709/)
 
-The app uses original synthetic data and no Premier League logos, footage, or real player data. The hackathon rules require a public GitHub repository and a public demo video under two minutes for submission. Neither has been published or submitted from this workspace.
+The app uses original synthetic data and no Premier League logos, footage, or real player data. The [source repository is public](https://github.com/guuly05/MSxPL); the demo video and hackathon submission still need to be completed.
