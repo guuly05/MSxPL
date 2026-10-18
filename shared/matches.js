@@ -4,8 +4,8 @@ export const matches = [
     competition: "Northstar Invitational · Match 08",
     dateLabel: "Synthetic fixture",
     venue: "Harbor Ground",
-    home: { name: "Harbor City", short: "HBC", color: "#d9ff67" },
-    away: { name: "Ridgevale FC", short: "RGV", color: "#b59aff" },
+    home: { name: "Harbor City", short: "HBC", color: "#715b91" },
+    away: { name: "Ridgevale FC", short: "RGV", color: "#a8b84e" },
     story: "A late surge flips the result",
     resultLabel: "Late winner",
     events: [
@@ -19,6 +19,7 @@ export const matches = [
       { id: "h-76", minute: 76, type: "pressure", team: "home", title: "Harbor win the second balls", detail: "Two quick recoveries keep the attack alive.", homeScore: 1, awayScore: 1, homeControl: 54, awayControl: 46 },
       { id: "h-78", minute: 78, type: "goal", team: "home", title: "Harbor strike again", detail: "A fast move across the box ends with the winning finish.", homeScore: 2, awayScore: 1, homeControl: 84, awayControl: 16 },
       { id: "h-84", minute: 84, type: "shot", team: "home", title: "Harbor threaten once more", detail: "The home side keep the pressure on with another shot.", homeScore: 2, awayScore: 1, homeControl: 80, awayControl: 20 },
+      { id: "h-87", minute: 87, type: "pressure", team: "home", title: "Harbor keep control", detail: "Harbor retain the ball and keep Ridgevale pinned back late on.", homeScore: 2, awayScore: 1, homeControl: 78, awayControl: 22 },
       { id: "h-90", minute: 90, type: "fulltime", team: "neutral", title: "Full time", detail: "Harbor City close out the 2–1 result.", homeScore: 2, awayScore: 1, homeControl: 77, awayControl: 23 }
     ]
   },
@@ -27,8 +28,8 @@ export const matches = [
     competition: "Northstar Invitational · Match 12",
     dateLabel: "Synthetic fixture",
     venue: "Cedar Park",
-    home: { name: "Eastgate United", short: "EGU", color: "#d9ff67" },
-    away: { name: "Brookfield Rovers", short: "BKR", color: "#b59aff" },
+    home: { name: "Eastgate United", short: "EGU", color: "#715b91" },
+    away: { name: "Brookfield Rovers", short: "BKR", color: "#a8b84e" },
     story: "A dismissal changes the balance",
     resultLabel: "Red-card swing",
     events: [
@@ -50,8 +51,8 @@ export const matches = [
     competition: "Northstar Invitational · Match 17",
     dateLabel: "Synthetic fixture",
     venue: "Meadow Lane",
-    home: { name: "Meadow Park", short: "MDP", color: "#d9ff67" },
-    away: { name: "Stonebridge Athletic", short: "SBA", color: "#b59aff" },
+    home: { name: "Meadow Park", short: "MDP", color: "#715b91" },
+    away: { name: "Stonebridge Athletic", short: "SBA", color: "#a8b84e" },
     story: "A match without a clear swing",
     resultLabel: "Even contest",
     events: [
