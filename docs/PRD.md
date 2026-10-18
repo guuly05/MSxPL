@@ -1,36 +1,36 @@
 # Turning Point Finder — Product Requirements Document
 
-- **Version:** 0.2
+- **Version:** 0.4
 - **Status:** Approved for implementation
-- **Date:** October 17, 2026
+- **Date:** October 18, 2026
 - **Primary product language:** English
 - **Hackathon goals:** Best Use of Microsoft Foundry and Best Enterprise Solution
 
 ## 1. Product summary
 
-Turning Point Finder helps football fans understand which moment most changed a match and what evidence supports that conclusion. Users replay a fictional match event by event, then inspect the leading turning-point candidate, its supporting match signals, its confidence, and a plain-language explanation.
+Turning Point Finder is an analyst-first post-match review workspace. It helps professional match analysts validate which event most changed a fictional match by inspecting the ranked candidate, its score breakdown, confidence, and traceable source events. A secondary Fan Summary view presents the same analysis in simpler language.
 
 The app uses transparent rules to identify and rank candidates. Microsoft Foundry may generate an optional explanation based on the structured match evidence. The replay, scoring, and local explanation remain functional without Foundry.
 
 ## 2. Goals
 
-1. Give casual fans a clear answer to “what changed the match, and why?”
+1. Help analysts validate the leading turning-point candidate against traceable match evidence.
 2. Show evidence for the result and make uncertainty visible.
 3. Replay synthetic football events in order to demonstrate live-like match intelligence.
-4. Provide a fan explanation and a more detailed analyst view.
+4. Provide a detailed Analyst view and a simpler Fan Summary view.
 5. Demonstrate a credible Foundry integration with a server-side secret, bounded requests, response checks, and a local fallback.
 6. Demonstrate enterprise-oriented qualities: transparent analysis, operational health status, request limits, bounded input/output, and failure handling.
 7. Keep access free for users in Somalia. The operator may still incur hosting or model costs.
 
 ## 3. Target users
 
-### Primary: casual football fan
+### Primary: professional post-match analyst
 
-Wants a quick, understandable explanation of the moment that changed a match.
+Wants to verify why an event ranked first, compare it with alternatives, inspect how the scoring rules contributed, and follow each claim to source events.
 
-### Secondary: analyst-minded fan
+### Secondary: casual football fan
 
-Wants to inspect the event timeline, the score and control signals before and after a candidate, and the confidence behind the ranking.
+Wants a concise, plain-language summary of what changed the match and why the evidence is uncertain.
 
 ## 4. MVP scope
 
@@ -41,11 +41,13 @@ Wants to inspect the event timeline, the score and control signals before and af
 - Event timeline, score display, recent-events feed, and synthetic match-control visualization.
 - Deterministic candidate ranking based on event impact, score changes, synthetic control shifts, and whether a shift persists.
 - One leading candidate and up to two alternatives.
+- An auditable breakdown of baseline, event weight, score change, control shift, and persistence contributions.
 - High, medium, or low confidence; an explicit “no clear turning point” result for weak evidence.
 - Fan and analyst explanation modes.
 - Optional, user-triggered Microsoft Foundry explanation.
 - Local template explanation when Foundry is unavailable or its response fails grounding checks.
 - Local-first operation with no account, database, or saved user information.
+- A complete site header and footer with Workspace, Methodology, About & limitations, and Privacy Policy pages.
 
 ### Out of scope
 
@@ -54,7 +56,7 @@ Wants to inspect the event timeline, the score and control signals before and af
 - User-uploaded data, accounts, saved profiles, or a database.
 - Winner prediction or win-probability claims.
 - Multi-agent orchestration.
-- Public deployment, public repository creation, or hackathon submission without explicit authorization.
+- Public deployment or hackathon submission without explicit authorization.
 
 ## 5. Turning-point definition and analysis
 
@@ -121,12 +123,22 @@ The app exposes a health endpoint that reports whether Foundry configuration is 
 
 The server limits request size, bounds model output, times out slow calls, and applies a small in-memory per-IP rate limit for the local demo.
 
+### FR-11: Ranking audit
+
+Each candidate report shows the individual scoring contributions for baseline, event type, score change, control shift, and persistence, alongside supporting source event identifiers. The impact index is explicitly labeled as a ranking aid, not a probability.
+
+### FR-12: Site information pages
+
+The site provides Methodology and About & limitations pages describing candidate selection, ranking, confidence, uncertainty, data scope, and Foundry’s role, plus a Privacy Policy that matches the actual demo data flow.
+
 ## 8. Data and privacy
 
 - Match and event data is synthetic and bundled in the project.
-- No user account or personal information is requested.
+- No account, profile, or user-submitted match information is requested.
+- The in-memory per-minute rate limiter temporarily processes request IP addresses; the application does not write those records to a database.
 - The server does not persist match choices or explanations.
-- Model requests contain only synthetic match facts and the selected explanation mode.
+- Model requests are only made on explicit user action and contain synthetic match facts and the selected explanation mode.
+- The application does not include analytics or advertising trackers.
 - API keys stay in the server environment and are excluded from source control.
 
 ## 9. Technical architecture
@@ -140,7 +152,11 @@ The server limits request size, bounds model output, times out slow calls, and a
 
 ## 10. UX and accessibility
 
-- Dark broadcast-inspired visual design with original colors and no licensed league branding.
+- Analyst-first workspace with the report and audit trail leading, and match replay visible alongside it.
+- Light editorial layout with typography, open tables, and fine dividers; avoid boxed card containers and promotional hero sections.
+- Use a light, editorial layout with open report sections, fine dividers, and no boxed card containers. Use restrained purple and lime color cues inspired by the Premier League identity, with original product branding and no league logos or marks.
+- A consistent header and footer link the Workspace, Methodology, About & limitations, and Privacy Policy pages.
+- Analyst detail is the default; Fan Summary remains available as a secondary explanation mode.
 - Responsive desktop and mobile layout.
 - Keyboard-visible focus, keyboard-operable controls, and reduced-motion support.
 - Color is not the only way to communicate confidence or event type.
