@@ -101,10 +101,13 @@ export function analyzeMatch(match, eventCount = match.events.length) {
     const persistence = after.length ? alignedAfter.length / after.length : 0;
     const scoreChanged = Boolean(previousEvent &&
       (previousEvent.homeScore !== event.homeScore || previousEvent.awayScore !== event.awayScore));
+    const baselinePoints = 12;
+    const eventPoints = eventImpact[event.type] || 0;
     const pressurePoints = Math.min(34, Math.abs(pressureShift) * 0.55);
     const persistencePoints = persistence * 18;
     const scorePoints = scoreChanged ? 12 : 0;
-    const impactScore = Math.round(clamp(12 + (eventImpact[event.type] || 0) + pressurePoints + persistencePoints + scorePoints, 0, 99));
+    const rawImpactScore = baselinePoints + eventPoints + pressurePoints + persistencePoints + scorePoints;
+    const impactScore = Math.round(clamp(rawImpactScore, 0, 99));
     const evidence = candidateEvidence(match, event, previousEvent, before, after, scoreChanged, pressureShift, persistence);
     const signalCount = (scoreChanged ? 1 : 0) +
       (Math.abs(pressureShift) >= 8 ? 1 : 0) +
@@ -117,6 +120,14 @@ export function analyzeMatch(match, eventCount = match.events.length) {
       event,
       index,
       impactScore,
+      scoreBreakdown: [
+        { id: "baseline", label: "Baseline", value: baselinePoints, detail: "Starting index" },
+        { id: "event", label: "Event weight", value: eventPoints, detail: event.type.replaceAll("_", " ") },
+        { id: "score", label: "Score change", value: scorePoints, detail: scoreChanged ? "Score changed at this event" : "No score change at this event" },
+        { id: "control", label: "Control shift", value: Number(pressurePoints.toFixed(1)), detail: Math.abs(pressureShift).toFixed(1) + " point change in average control" },
+        { id: "persistence", label: "Persistence", value: Number(persistencePoints.toFixed(1)), detail: Math.round(persistence * 100) + "% of later events aligned with the shift" }
+      ],
+      rawImpactScore: Number(rawImpactScore.toFixed(1)),
       pressureShift,
       persistence,
       signalCount,
@@ -164,9 +175,9 @@ export function buildFallbackExplanation(match, candidate, mode = "fan") {
   const eventTeam = event.team === "home" || event.team === "away" ? teamName(match, event.team) : "Both teams";
   const score = scoreText(event.homeScore, event.awayScore);
   if (candidate.confidence === "low") {
-    return "The " + String(event.minute) + "′ " + eventNames[event.type] + " is the leading candidate, but the match data does not show a strong enough follow-on shift to call it a clear turning point.";
+    return "The " + String(event.minute) + "′ " + eventNames[event.type] + " by " + eventTeam + " is the leading candidate, but there is not enough follow-on evidence to call it a clear turning point.";
   }
-  const detail = eventTeam + " " + event.title.toLowerCase() + " at " + String(event.minute) + "′. The score then stood at " + score + ".";
+  const detail = String(event.minute) + "′: " + event.detail + " The score then stood at " + score + ".";
   const shiftSide = mean(match.events
     .slice(candidate.index + 1, candidate.index + 4)
     .map(controlDifference)) >= 0 ? match.home.name : match.away.name;
