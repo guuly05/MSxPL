@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   Activity,
-  ArrowUpRight,
   Check,
   ChevronLeft,
   ChevronRight,
-  Clock3,
   Gauge,
   Info,
   LoaderCircle,
@@ -27,9 +25,9 @@ function eventGlyph(type) {
   if (type === "red_card") return "R";
   if (type === "substitution") return "S";
   if (type === "penalty") return "P";
-  if (type === "shot") return "•";
+  if (type === "shot") return "Sh";
   if (type === "fulltime") return "FT";
-  return "·";
+  return "Ev";
 }
 
 function eventTone(type) {
@@ -50,19 +48,21 @@ function TeamMark({ team, small = false }) {
 
 function ConfidenceBadge({ value }) {
   const label = value === "high" ? "High confidence" : value === "medium" ? "Medium confidence" : "Low confidence";
-  return <span className={"confidence-badge confidence-" + value}><span />{label}</span>;
+  return <span className={"confidence-badge confidence-" + value}>{label}</span>;
 }
 
 function MatchCard({ match, active, onSelect }) {
   const finalScore = getFinalScore(match);
   return (
-    <button className={"match-option" + (active ? " match-option-active" : "")} onClick={onSelect} aria-pressed={active}>
-      <span className="match-option-meta"><span>{match.competition.split(" · ")[1]}</span><span>DEMO</span></span>
-      <span className="match-option-score">
-        <span>{match.home.name}</span><b>{finalScore.home}</b><i>–</i><b>{finalScore.away}</b><span>{match.away.name}</span>
-      </span>
+    <div className="match-option-unit">
+      <button className={"match-option" + (active ? " match-option-active" : "")} onClick={onSelect} aria-pressed={active}>
+        <span className="match-option-meta">{match.competition.split(" · ")[1]}</span>
+        <span className="match-option-score">
+          <span>{match.home.name}</span><b>{finalScore.home}</b><i>:</i><b>{finalScore.away}</b><span>{match.away.name}</span>
+        </span>
+      </button>
       <span className="match-option-story">{match.story}</span>
-    </button>
+    </div>
   );
 }
 
@@ -80,25 +80,19 @@ function MomentumChart({ match, eventIndex }) {
   return (
     <section className="control-section" aria-labelledby="control-heading">
       <div className="section-heading">
-        <div><span className="eyebrow">MATCH SIGNAL</span><h3 id="control-heading">Synthetic control</h3></div>
+        <div><h3 id="control-heading">Synthetic control</h3></div>
         <span className="signal-disclaimer">Not win probability</span>
       </div>
       <div className="chart-legend">
-        <span><i className="legend-home" />{match.home.short} · {current.homeControl}%</span>
-        <span><i className="legend-away" />{match.away.short} · {current.awayControl}%</span>
+        <span><i className="legend-home" />{match.home.short} {current.homeControl}%</span>
+        <span><i className="legend-away" />{match.away.short} {current.awayControl}%</span>
       </div>
       <div className="chart-canvas" role="img" aria-label={"Synthetic control signal at " + formatMinute(current.minute) + ": " + match.home.name + " " + current.homeControl + " percent, " + match.away.name + " " + current.awayControl + " percent"}>
         <div className="chart-gridline chart-grid-top" /><div className="chart-gridline chart-grid-mid" /><div className="chart-gridline chart-grid-bottom" />
         <svg viewBox={"0 0 " + width + " " + height} preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="homeArea" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="#705b98" stopOpacity=".15" />
-              <stop offset="100%" stopColor="#705b98" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          {points.length > 1 && <polygon points={"0," + height + " " + homePoints + " " + width + "," + height} fill="url(#homeArea)" />}
-          <polyline points={homePoints} fill="none" stroke="#705b98" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
-          <polyline points={awayPoints} fill="none" stroke="#a7b654" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="5 5" vectorEffect="non-scaling-stroke" />
+          {points.length > 1 && <polygon id="homeArea" points={"0," + height + " " + homePoints + " " + width + "," + height} fill="var(--color-accent)" fillOpacity=".09" />}
+          <polyline points={homePoints} fill="none" stroke="var(--color-accent)" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+          <polyline points={awayPoints} fill="none" stroke="var(--color-signal)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="5 5" vectorEffect="non-scaling-stroke" />
         </svg>
       </div>
       <div className="chart-axis"><span>00′</span><span>{formatMinute(current.minute)}</span></div>
@@ -110,7 +104,7 @@ function Timeline({ match, eventIndex, selectedCandidate, onSeek }) {
   return (
     <section className="timeline-section" aria-labelledby="timeline-heading">
       <div className="section-heading">
-        <div><span className="eyebrow">EVENT TRACE</span><h3 id="timeline-heading">Replay timeline</h3></div>
+        <div><h3 id="timeline-heading">Replay timeline</h3></div>
         <span className="timeline-count">{Math.max(0, eventIndex + 1)} / {match.events.length}</span>
       </div>
       <p className="section-note">Select an event to inspect the match at that point.</p>
@@ -127,7 +121,7 @@ function Timeline({ match, eventIndex, selectedCandidate, onSeek }) {
                 style={{ left: (index / Math.max(1, match.events.length - 1) * 100) + "%" }}
                 onClick={() => onSeek(index)}
                 aria-label={formatMinute(event.minute) + " " + event.title + (isCandidate ? ", selected turning-point candidate" : "")}
-                title={formatMinute(event.minute) + " · " + event.title + (isCandidate ? " · Candidate" : "")}
+                title={formatMinute(event.minute) + ": " + event.title + (isCandidate ? " (candidate)" : "")}
               >
                 <span>{eventGlyph(event.type)}</span><small>{formatMinute(event.minute)}</small>
               </button>
@@ -145,7 +139,7 @@ function EventFeed({ match, eventIndex, onSeek }) {
   return (
     <section className="event-sequence" aria-labelledby="sequence-heading">
       <div className="section-heading">
-        <div><span className="eyebrow">SOURCE EVENTS</span><h3 id="sequence-heading">Recent sequence</h3></div>
+        <div><h3 id="sequence-heading">Recent sequence</h3></div>
         <Activity size={17} aria-hidden="true" />
       </div>
       {visible.length ? <div className="event-list">
@@ -166,7 +160,7 @@ function ScoreBreakdown({ candidate }) {
   return (
     <section className="method-section" aria-labelledby="method-heading">
       <div className="section-heading">
-        <div><span className="eyebrow">RANKING METHOD</span><h3 id="method-heading">Impact index breakdown</h3></div>
+        <div><h3 id="method-heading">Impact index breakdown</h3></div>
         <span className="method-cap">Capped at 99</span>
       </div>
       <div className="breakdown-grid">
@@ -202,7 +196,7 @@ function InsightPanel({ match, analysis, viewMode, setViewMode, selectedCandidat
   return (
     <section className="analysis-panel" aria-labelledby="analysis-title">
       <header className="analysis-header">
-        <div><span className="eyebrow">POST-MATCH REPORT</span><h2 id="analysis-title">Turning-point analysis</h2></div>
+        <div><h2 id="analysis-title">Turning-point analysis</h2></div>
         <span className="report-ready"><Check size={14} /> Review ready</span>
       </header>
 
@@ -210,7 +204,7 @@ function InsightPanel({ match, analysis, viewMode, setViewMode, selectedCandidat
         {analysis.noClearTurningPoint && <div className="uncertainty-banner"><Info size={16} /><span><strong>No clear turning point</strong><small>The leading event is tentative; the available match signals do not show a strong enough sustained shift.</small></span></div>}
         <article className="candidate-summary">
           <div className="candidate-summary-top">
-            <span className="candidate-rank"><Trophy size={15} /> {candidateRank === 1 ? "TOP-RANKED CANDIDATE" : "ALTERNATIVE CANDIDATE"}</span>
+            <span className="candidate-rank"><Trophy size={15} /> {candidateRank === 1 ? "Top-ranked candidate" : "Alternative candidate"}</span>
             <span className="candidate-time">{formatMinute(candidate.event.minute)}</span>
           </div>
           <div className="candidate-main">
@@ -230,7 +224,7 @@ function InsightPanel({ match, analysis, viewMode, setViewMode, selectedCandidat
 
         <section className="evidence-section" aria-labelledby="evidence-title">
           <div className="section-heading">
-            <div><span className="eyebrow">AUDIT TRAIL</span><h3 id="evidence-title">Evidence supporting this candidate</h3></div>
+            <div><h3 id="evidence-title">Evidence supporting this candidate</h3></div>
             <span className="evidence-count"><ShieldCheck size={14} /> {candidate.evidence.length} sources</span>
           </div>
           <div className="evidence-list">
@@ -241,7 +235,7 @@ function InsightPanel({ match, analysis, viewMode, setViewMode, selectedCandidat
 
         <section className="explanation-section" aria-labelledby="explanation-title">
           <div className="section-heading explanation-section-heading">
-            <div><span className="eyebrow">FOUNDRY EXPLANATION</span><h3 id="explanation-title">Explain the evidence</h3></div>
+            <div><h3 id="explanation-title">Explain the evidence</h3></div>
             <Sparkles size={17} />
           </div>
           <div className="explanation-controls" role="group" aria-label="Explanation audience">
@@ -251,18 +245,17 @@ function InsightPanel({ match, analysis, viewMode, setViewMode, selectedCandidat
           <p className="explanation-text">{narrative}</p>
           {activeExplanation && explanation.claims?.length > 0 && <div className="grounding-note"><ShieldCheck size={14} /> {explanation.claims.length} model claim{explanation.claims.length === 1 ? "" : "s"} linked to evidence</div>}
           <div className="foundry-action-row">
-            <button className="foundry-button" onClick={() => onGenerate(candidate)} disabled={!isConfigured || loading}>
+            <button className="foundry-button" onClick={() => onGenerate(candidate)} disabled={!isConfigured || loading} aria-busy={loading}>
               {loading ? <LoaderCircle size={16} className="spin" /> : <Sparkles size={16} />}
               {loading ? "Generating explanation…" : activeExplanation ? "Regenerate explanation" : "Generate with Microsoft Foundry"}
-              {!loading && <ArrowUpRight size={15} />}
             </button>
-            <span className="foundry-state"><i className={isConfigured ? "state-dot state-ready" : "state-dot"} />{isConfigured ? "Connected" : "Local mode"}</span>
+            <span className="foundry-state">{isConfigured ? "Connected" : "Local mode"}</span>
           </div>
           {!isConfigured && <p className="setup-hint">Foundry is optional. Add the server-side endpoint, key, and deployment in <code>.env</code> to enable generated explanations.</p>}
         </section>
 
         {analysis.alternatives.length > 0 && <section className="alternatives-section" aria-labelledby="alternatives-title">
-          <div className="section-heading"><div><span className="eyebrow">CANDIDATE COMPARISON</span><h3 id="alternatives-title">Other ranked events</h3></div><span className="evidence-count">{analysis.alternatives.length} alternatives</span></div>
+          <div className="section-heading"><div><h3 id="alternatives-title">Other ranked events</h3></div><span className="evidence-count">{analysis.alternatives.length} alternatives</span></div>
           <div className="candidate-table" role="list">
             {analysis.alternatives.map((item, index) => <button
               className={"alternative-row" + (item.id === candidate.id ? " alternative-selected" : "")}
@@ -272,7 +265,7 @@ function InsightPanel({ match, analysis, viewMode, setViewMode, selectedCandidat
               aria-pressed={item.id === candidate.id}
             >
               <span className="alternative-rank">0{index + 2}</span>
-              <span className="alternative-name"><strong>{item.event.title}</strong><small>{formatMinute(item.event.minute)} · {item.event.type.replaceAll("_", " ")}</small></span>
+              <span className="alternative-name"><strong>{item.event.title}</strong><small>{formatMinute(item.event.minute)} {item.event.type.replaceAll("_", " ")}</small></span>
               <span className="alternative-impact">{item.impactScore}<small>/99</small></span>
               <ChevronRight size={16} />
             </button>)}
@@ -292,13 +285,13 @@ function ReplayPanel({ match, eventIndex, playing, currentEvent, onPlay, onPause
   return (
     <aside className="replay-column" aria-label="Match replay and context">
       <section className="scoreboard-section">
-        <div className="scoreboard-top"><span className="eyebrow">MATCH CONTEXT</span><span className={"replay-state" + (playing ? " replay-state-live" : "")}>{playing ? "REPLAYING" : isComplete ? "FULL TIME" : "REPLAY PAUSED"}</span></div>
+        <div className="scoreboard-top"><span className="scoreboard-label">Match context</span><span className={"replay-state" + (playing ? " replay-state-live" : "")}>{playing ? "Replaying" : isComplete ? "Full time" : "Replay paused"}</span></div>
         <div className="scoreboard">
-          <div className="score-team score-home"><TeamMark team={match.home} /><span><strong>{match.home.name}</strong><small>HOME</small></span></div>
-          <div className="score-center"><strong>{score.home}<i>:</i>{score.away}</strong><span>{currentEvent ? formatMinute(currentEvent.minute) : "00′"} <b>·</b> {isComplete ? "FT" : "SIM"}</span></div>
-          <div className="score-team score-away"><TeamMark team={match.away} /><span><strong>{match.away.name}</strong><small>AWAY</small></span></div>
+          <div className="score-team score-home"><TeamMark team={match.home} /><span><strong>{match.home.name}</strong><small>Home</small></span></div>
+          <div className="score-center"><strong>{score.home}<i>:</i>{score.away}</strong><span>{currentEvent ? formatMinute(currentEvent.minute) : "00′"} {isComplete ? "Full time" : "Simulation"}</span></div>
+          <div className="score-team score-away"><TeamMark team={match.away} /><span><strong>{match.away.name}</strong><small>Away</small></span></div>
         </div>
-        <div className="scoreboard-bottom"><span>{match.venue}</span><span>{match.competition}</span></div>
+        <div className="scoreboard-bottom"><span>{match.venue}</span><span>{match.competition.split(" · ").join(", ")}</span></div>
       </section>
 
       <MomentumChart match={match} eventIndex={eventIndex} />
@@ -445,12 +438,12 @@ function Workspace() {
       <SiteHeader foundryStatus={foundryStatus} activePage="workspace" />
       <main id="top" className="workspace-main">
         <section className="page-heading">
-          <div><span className="eyebrow">ANALYST WORKSPACE <span className="heading-slash">/</span> POST-MATCH REVIEW</span><h1>Match review</h1><p>Validate the leading turning point against the event evidence.</p></div>
-          <div className="report-context"><span><small>REPORT TYPE</small><strong>Post-match analysis</strong></span><span><small>DATA SOURCE</small><strong>Synthetic event feed</strong></span></div>
+          <div><h1>Match review</h1><p>Validate the leading turning point against the event evidence.</p></div>
+          <div className="report-context"><span><small>Report type</small><strong>Post-match analysis</strong></span><span><small>Data source</small><strong>Synthetic event feed</strong></span></div>
         </section>
 
         <section className="match-picker-section" aria-labelledby="match-picker-title">
-          <div className="picker-heading"><div><span className="eyebrow">SAMPLE FIXTURES</span><h2 id="match-picker-title">Select a match</h2></div><span className="fixture-total">{String(matches.length).padStart(2, "0")} fixtures</span></div>
+          <div className="picker-heading"><div><h2 id="match-picker-title">Select a match</h2></div><span className="fixture-total">{String(matches.length).padStart(2, "0")} fixtures</span></div>
           <div className="match-picker">
             {matches.map((item) => <MatchCard key={item.id} match={item} active={item.id === match.id} onSelect={() => selectMatch(item.id)} />)}
           </div>
