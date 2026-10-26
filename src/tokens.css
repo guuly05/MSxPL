@@ -1,0 +1,76 @@
+/* Hallmark · tokens source · app screen · 2026-10-26 · v2.0.0 */
+:root {
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 40px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-display-s: 1.5rem;
+  --text-display: 2rem;
+  --text-section: 1.25rem;
+  --text-title: 1rem;
+  --text-lead: 1.125rem;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 180ms;
+  --dur-long: 320ms;
+
+  --container: 1440px;
+  --gutter: 40px;
+  --gap-columns: 24px;
+  --radius-card: 3px;
+  --radius-pill: 999px;
+  --radius-input: 3px;
+  --rule-hair: 1px;
+  --shadow-card: none;
+  --tracking-display: -0.035em;
+  --z-base: 1;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-sticky-nav: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+
+  --color-paper: #fcfbfd;
+  --color-paper-2: #f4f1f8;
+  --color-paper-3: #ebe7f0;
+  --color-ink: #252a35;
+  --color-ink-2: #484e5b;
+  --color-muted: #626877;
+  --color-muted-soft: #737987;
+  --color-rule: #dedbe2;
+  --color-rule-strong: #c9c5cf;
+  --color-accent: #584276;
+  --color-accent-light: #715b91;
+  --color-accent-soft: #f4f1f8;
+  --color-accent-ink: #ffffff;
+  --color-signal: #66732f;
+  --color-signal-light: #a8b84e;
+  --color-success: #356447;
+  --color-warning: #80571e;
+  --color-error: #a04349;
+  --color-focus: #584276;
+
+  --font-display: "Segoe UI", Inter, system-ui, sans-serif;
+  --font-body: "Segoe UI", Inter, system-ui, sans-serif;
+  --font-outlier: var(--font-body);
+  --font-mono: "Cascadia Code", Consolas, monospace;
+}

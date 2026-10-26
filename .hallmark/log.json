@@ -1,0 +1,27 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "app",
+  "shape": "review desk",
+  "theme": "brand",
+  "axes": "cool tinted paper / Segoe UI / deep plum",
+  "hero": "none; app screen",
+  "nav": "top bar with four destinations",
+  "footer": "brand and product notes beside information links",
+  "imagery": "product interface, synthetic chart and replay",
+  "photos": [],
+  "entry": "app screen redesign",
+  "fingerprint": "synchronized event review",
+  "sections": [
+   "workspace",
+   "about",
+   "methodology",
+   "privacy"
+  ],
+  "signature": "coordinated report and replay",
+  "waived": [],
+  "prompt": "football match analysis app",
+  "date": "2026-10-26"
+ }
+]
