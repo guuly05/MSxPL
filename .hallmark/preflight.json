@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-26",
+  "scope": "app",
+  "inference": {
+    "audience": "football analysts and fans reviewing match turning points",
+    "use": "select a fixture, inspect evidence, and replay its event sequence",
+    "tone": "utilitarian, precise, calm",
+    "genre": "modern-minimal"
+  },
+  "pages": [
+    { "route": "/", "file": "src/App.jsx", "type": "app screen" },
+    { "route": "/about", "file": "src/SitePages.jsx", "type": "information page" },
+    { "route": "/methodology", "file": "src/SitePages.jsx", "type": "information page" },
+    { "route": "/privacy", "file": "src/SitePages.jsx", "type": "information page" }
+  ],
+  "signals": [
+    { "source": "package.json", "lines": "1-18", "found": "React and Vite app; build and server commands" },
+    { "source": "src/App.jsx", "lines": "1-475", "found": "fixture selection, report, evidence, chart, replay, explanation and event sequence" },
+    { "source": "src/SitePages.jsx", "lines": "1-120", "found": "shared app navigation/footer and About, Methodology, Privacy pages" },
+    { "source": "src/styles.css", "lines": "1-350", "found": "existing project purple, lime and neutral palette, mark and component styling" },
+    { "source": "src/tokens.css", "lines": "new", "found": "functional type, spacing, color, motion and surface tokens" }
+  ],
+  "material": {
+    "real": ["Turning Point Finder name and mark", "four existing routes", "three bundled synthetic fixtures", "existing match, event, score, evidence and ranking content", "existing synthetic-data and Microsoft Foundry states", "privacy and methodology statements"],
+    "pictures": ["existing brand-mark.svg", "the running product rendered in the redesigned app", "the existing synthetic control chart and event replay"],
+    "absent": ["real-match imagery", "customer logos", "testimonials", "unprovided performance metrics"]
+  },
+  "preserved": ["project purple, lime and neutral palette", "brand mark", "all four routes and five links", "all 21 event/replay/analysis handlers", "one field, 29 headings and seven figure records", "existing copy facts, synthetic-data context and disclosures"],
+  "introduced": ["a compact app shell and responsive review-desk workspace", "coordinated report and replay panes", "shared token and base styles", "consistent typography, spacing, focus, motion and control sizing", "a consistent information-page layout"],
+  "before": { "floorFails": 98, "reflex": 142, "warns": 8, "links": 5, "handlers": 21 }
+}
