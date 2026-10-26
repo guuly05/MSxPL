@@ -1,12 +1,10 @@
-import { ArrowUpRight } from "lucide-react";
-
 export function SiteHeader({ foundryStatus, activePage = "workspace" }) {
   return (
     <header className="site-header">
       <div className="site-header-inner">
         <a className="site-brand" href="/" aria-label="Turning Point Finder workspace">
           <img className="site-brand-mark" src="/brand-mark.svg" alt="" width="36" height="36" />
-          <span><strong>Turning Point Finder</strong><small>FOOTBALL MATCH INTELLIGENCE</small></span>
+          <span><strong>Turning Point Finder</strong><small>Football match intelligence</small></span>
         </a>
         <nav className="site-nav" aria-label="Main navigation">
           <a href="/" aria-current={activePage === "workspace" ? "page" : undefined}>Workspace</a>
@@ -16,7 +14,7 @@ export function SiteHeader({ foundryStatus, activePage = "workspace" }) {
         </nav>
         <div className="site-status">
           <span className="synthetic-status">Synthetic data</span>
-          {foundryStatus && <span className="foundry-status"><i className={foundryStatus.foundryConfigured ? "state-dot state-ready" : "state-dot"} />{foundryStatus.foundryConfigured ? "Foundry connected" : "Local mode"}</span>}
+          {foundryStatus && <span className="foundry-status">{foundryStatus.foundryConfigured ? "Foundry connected" : "Local mode"}</span>}
         </div>
       </div>
     </header>
@@ -28,19 +26,19 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div className="site-footer-main">
         <div><strong>Turning Point Finder</strong><p>Explainable match analysis from synthetic football events.</p></div>
-        <nav aria-label="Footer navigation"><a href="/methodology">Methodology</a><a href="/about">About & limitations</a><a href="/privacy">Privacy policy</a><a href="https://github.com/guuly05/MSxPL" target="_blank" rel="noreferrer">Source code / contact <ArrowUpRight size={13} /></a></nav>
+        <nav aria-label="Footer navigation"><a href="/methodology">Methodology</a><a href="/about">About & limitations</a><a href="/privacy">Privacy policy</a><a href="https://github.com/guuly05/MSxPL" target="_blank" rel="noreferrer">Source code / contact</a></nav>
       </div>
-      <div className="site-footer-meta"><span>© 2026 Turning Point Finder · Independent hackathon demo</span><span>Not affiliated with or endorsed by the Premier League.</span></div>
+      <div className="site-footer-meta"><span>© 2026 Turning Point Finder</span><span>Independent hackathon demo</span><span>Not affiliated with or endorsed by the Premier League.</span></div>
     </footer>
   );
 }
 
-function StaticPage({ foundryStatus, activePage, eyebrow, title, intro, children }) {
+function StaticPage({ foundryStatus, activePage, meta, title, intro, children }) {
   return (
     <div className="site-shell">
       <SiteHeader foundryStatus={foundryStatus} activePage={activePage} />
       <main className="static-main">
-        <header className="static-heading"><span className="eyebrow">{eyebrow}</span><h1>{title}</h1><p>{intro}</p></header>
+        <header className="static-heading"><h1>{title}</h1><div><p>{intro}</p>{meta && <p className="static-meta">{meta}</p>}</div></header>
         <div className="prose-content">{children}</div>
       </main>
       <SiteFooter />
@@ -52,7 +50,7 @@ export function PrivacyPolicyPage() {
   return (
     <StaticPage
       activePage="privacy"
-      eyebrow="POLICY · UPDATED 18 OCTOBER 2026"
+      meta={<time dateTime="2026-10-18">Updated 18 October 2026</time>}
       title="Privacy policy"
       intro="This page explains what Turning Point Finder processes when you use this demonstration application."
     >
@@ -69,7 +67,7 @@ export function MethodologyPage() {
   return (
     <StaticPage
       activePage="methodology"
-      eyebrow="ANALYSIS · VERSION 1"
+      meta="Version 1"
       title="How the ranking works"
       intro="Turning Point Finder ranks candidate events by observable synthetic match signals. The score is a review aid, not a prediction."
     >
@@ -86,7 +84,6 @@ export function AboutPage() {
   return (
     <StaticPage
       activePage="about"
-      eyebrow="ABOUT · PRODUCT SCOPE"
       title="About this project"
       intro="Turning Point Finder is a hackathon demonstration of evidence-led football match review."
     >
